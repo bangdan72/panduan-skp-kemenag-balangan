@@ -519,9 +519,7 @@
 <!-- Formulir Kontak -->
 <div class="col-12">
   <h5>Kirim Pesan</h5>
-  <form action="https://script.google.com/macros/s/AKfycbxkeHcTJY2jeDpos9ug0hVYkwEVMjaHezryu2xMw3p6HtQRVNYLzdgyFkq1vo5BAUYa/exec" 
-        method="post" accept-charset="UTF-8">
-
+  <form id="contact-form" action="https://formspree.io/f/mandvrvp" method="POST">
     <!-- Nama -->
     <div class="mb-3">
       <label for="name" class="form-label">Nama</label>
@@ -549,28 +547,29 @@
 </div>
 
 <script>
-  const form = document.querySelector("form");
-  const alertBox = document.getElementById("form-alert");
+const form = document.getElementById("contact-form");
+const alertBox = document.getElementById("form-alert");
 
 form.addEventListener("submit", async function(event) {
   event.preventDefault();
 
   const formData = new FormData(form);
+
   try {
     const response = await fetch(form.action, {
       method: form.method,
-      body: formData
+      body: formData,
+      headers: { 'Accept': 'application/json' }
     });
 
-    const result = await response.json(); // baca balasan JSON
-
-    if (result.status === "success") {
+    if (response.ok) {
       alertBox.className = "alert alert-success mt-3";
-      alertBox.textContent = "✅ " + result.message;
+      alertBox.textContent = "✅ Pesan berhasil dikirim. Terima kasih!";
       alertBox.classList.remove("d-none");
       form.reset();
     } else {
-      throw new Error(result.message);
+      const data = await response.json();
+      throw new Error(data.error || "Terjadi kesalahan saat mengirim pesan.");
     }
   } catch (error) {
     alertBox.className = "alert alert-danger mt-3";
@@ -578,8 +577,8 @@ form.addEventListener("submit", async function(event) {
     alertBox.classList.remove("d-none");
   }
 });
+</script> 
 
-</script>
 
 
             <!-- Alamat & Peta -->
@@ -596,61 +595,34 @@ form.addEventListener("submit", async function(event) {
     </div>
 
 
-<!-- Carousel ASN -->
-<section class="asn-carousel-section section-padding section-bg">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-8 col-12 text-center">
-        <h2 class="mb-4">Respon ASN Terbaru</h2>
-
-        <div id="asn-carousel" class="carousel slide" data-bs-ride="carousel">
-          <div class="carousel-inner" id="carousel-content">
-            <!-- Konten akan diisi otomatis dari spreadsheet -->
-          </div>
-
-          <button class="carousel-control-prev" type="button" data-bs-target="#asn-carousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#asn-carousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+ 
 
 <!-- CSS tambahan -->
 <style>
 .carousel-caption h4.carousel-title {
-    color: #3a4a5c; /* abu-abu gelap mirip foto */
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1); /* shadow halus */
+    color: #3a4a5c;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     font-weight: 600;
     font-size: 1.5rem;
 }
 
-/* Nama dan Jabatan ASN */
 .carousel-caption small.carousel-name {
-    color: #1a1a1a; /* hitam pekat */
+    color: #1a1a1a;
     font-weight: 500;
     display: block;
     margin-top: 5px;
 }
 
-/* Styling carousel-item */
 .carousel-item {
     padding: 40px 20px;
     min-height: 150px;
-    background-color: #ffffff; /* putih bersih seperti foto */
+    background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-/* Judul section */
 .asn-carousel-section h2 {
-    color: #2c3e50; /* warna gelap tapi tidak hitam pekat */
+    color: #2c3e50;
     font-weight: 700;
     margin-bottom: 1.5rem;
 }
@@ -710,6 +682,7 @@ loadASNCarousel();
 // Auto-update setiap 30 detik
 setInterval(loadASNCarousel, 30000);
 </script>
+
 
 
 

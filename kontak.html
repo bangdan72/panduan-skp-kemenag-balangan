@@ -121,70 +121,97 @@
         </div>
       </div>
 
-<!-- Formulir Kontak -->
-<div class="col-12">
-  <h5>Kirim Pesan</h5>
-  <form action="https://script.google.com/macros/s/AKfycbxkeHcTJY2jeDpos9ug0hVYkwEVMjaHezryu2xMw3p6HtQRVNYLzdgyFkq1vo5BAUYa/exec" 
-        method="post" accept-charset="UTF-8">
 
-    <!-- Nama -->
-    <div class="mb-3">
-      <label for="name" class="form-label">Nama</label>
-      <input type="text" class="form-control" id="name" name="name" required autocomplete="name">
-    </div>
 
-    <!-- Email -->
-    <div class="mb-3">
-      <label for="email" class="form-label">Email</label>
-      <input type="email" class="form-control" id="email" name="email" required autocomplete="email">
-    </div>
+<!-- CSS tambahan -->
+<style>
+.carousel-caption h4.carousel-title {
+    color: #3a4a5c;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    font-weight: 600;
+    font-size: 1.5rem;
+}
 
-    <!-- Pesan -->
-    <div class="mb-3">
-      <label for="message" class="form-label">Pesan</label>
-      <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
-    </div>
+.carousel-caption small.carousel-name {
+    color: #1a1a1a;
+    font-weight: 500;
+    display: block;
+    margin-top: 5px;
+}
 
-    <!-- Alert sukses/gagal -->
-    <div id="form-alert" class="alert d-none" role="alert"></div>
+.carousel-item {
+    padding: 40px 20px;
+    min-height: 150px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
 
-    <!-- Tombol submit -->
-    <button type="submit" class="btn btn-primary">Kirim</button>
-  </form>
-</div>
+.asn-carousel-section h2 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+</style>
+
+<!-- PapaParse untuk parsing CSV -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
 <script>
-  const form = document.querySelector("form");
-  const alertBox = document.getElementById("form-alert");
+const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRM69kC6Cf8iVBOsrn1DX0ZfuDVh4AZXhOHeC5WKv57qPthnjXAUZ1ySAubNaX--ktzUlNm1QDANCFR/pub?output=csv';
 
-form.addEventListener("submit", async function(event) {
-  event.preventDefault();
+function loadASNCarousel() {
+  fetch(csvUrl)
+    .then(response => response.text())
+    .then(data => {
+      const parsed = Papa.parse(data, {header: true});
+      const rows = parsed.data.filter(row => row['Nama']?.trim() && row['Pesan / Respon']?.trim());
+      const carouselContent = document.getElementById('carousel-content');
+      carouselContent.innerHTML = ''; // Clear carousel sebelum update
 
-  const formData = new FormData(form);
-  try {
-    const response = await fetch(form.action, {
-      method: form.method,
-      body: formData
+      if(rows.length === 0){
+        carouselContent.innerHTML = `<div class="carousel-item active">
+          <div class="carousel-caption">
+            <h4 class="carousel-title">Belum ada respon ASN</h4>
+          </div>
+        </div>`;
+        return;
+      }
+
+      rows.forEach((row, index) => {
+        const activeClass = index === 0 ? 'active' : '';
+        const carouselItem = document.createElement('div');
+        carouselItem.className = `carousel-item ${activeClass}`;
+        carouselItem.innerHTML = `
+          <div class="carousel-caption">
+            <h4 class="carousel-title">${row['Pesan / Respon']}</h4>
+            <small class="carousel-name"><span class="carousel-name-title">${row['Nama']}</span>${row['Jabatan'] ? ', ' + row['Jabatan'] : ''}</small>
+          </div>
+        `;
+        carouselContent.appendChild(carouselItem);
+      });
+    })
+    .catch(error => {
+      console.error('Error loading CSV:', error);
+      const carouselContent = document.getElementById('carousel-content');
+      carouselContent.innerHTML = `<div class="carousel-item active">
+        <div class="carousel-caption">
+          <h4 class="carousel-title">Gagal memuat respon ASN</h4>
+        </div>
+      </div>`;
     });
+}
 
-    const result = await response.json(); // baca balasan JSON
+// Load pertama kali saat halaman dibuka
+loadASNCarousel();
 
-    if (result.status === "success") {
-      alertBox.className = "alert alert-success mt-3";
-      alertBox.textContent = "✅ " + result.message;
-      alertBox.classList.remove("d-none");
-      form.reset();
-    } else {
-      throw new Error(result.message);
-    }
-  } catch (error) {
-    alertBox.className = "alert alert-danger mt-3";
-    alertBox.textContent = "❌ " + error.message;
-    alertBox.classList.remove("d-none");
-  }
-});
-
+// Auto-update setiap 30 detik
+setInterval(loadASNCarousel, 30000);
 </script>
+
+
+
+
 
 
 
