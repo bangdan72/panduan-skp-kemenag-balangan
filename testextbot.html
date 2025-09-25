@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Teks Dibacakan</title>
+  <style>
+    .highlight {
+      background-color: yellow;
+      transition: background-color 0.3s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <h2>Demo Text to Speech</h2>
+
+  <p id="teks1">Arahkan kursor ke teks ini, maka akan dibacakan dengan highlight kuning pada seluruh teks.</p>
+  <p id="teks2">Ini contoh kedua. Coba arahkan kursor untuk mendengar bacaan dengan sorotan penuh.</p>
+  <p>Kalau kamu blok teks ini, maka teks yang diseleksi juga akan dibacakan.</p>
+
+  <div id="selectedTextContainer" style="margin-top:20px; font-style:italic;"></div>
+
+  <script>
+    let currentElement = null;
+
+    function speak(teks, element) {
+      stopSpeech(); 
+
+      currentElement = element;
+      element.classList.add("highlight"); // sorot semua teks kuning
+
+      let msg = new SpeechSynthesisUtterance(teks);
+      msg.lang = "id-ID";
+
+      // pilih suara Indonesia (kalau ada)
+      let voices = speechSynthesis.getVoices();
+      let indoVoice = voices.find(v => v.lang === "id-ID" && v.name.toLowerCase().includes("female"));
+      if (indoVoice) msg.voice = indoVoice;
+
+      msg.onend = () => {
+        clearHighlight();
+      };
+
+      speechSynthesis.speak(msg);
+    }
+
+    function stopSpeech() {
+      speechSynthesis.cancel();
+      clearHighlight();
+    }
+
+    function clearHighlight() {
+      if (currentElement) {
+        currentElement.classList.remove("highlight");
+        currentElement = null;
+      }
+    }
+
+    // Event hover
+    document.querySelectorAll("p").forEach(el => {
+      el.addEventListener("mouseover", function() {
+        speak(this.innerText, this);
+      });
+    });
+
+    // Event seleksi teks
+    document.addEventListener("mouseup", function() {
+      let selectedText = window.getSelection().toString().trim();
+      if (selectedText) {
+        let container = document.getElementById("selectedTextContainer");
+        container.textContent = selectedText;
+        speak(selectedText, container);
+      }
+    });
+  </script>
+</body>
+</html>

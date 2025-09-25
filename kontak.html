@@ -23,7 +23,7 @@
           </p>
           <p class="d-flex mb-0">
             <i class="bi-envelope me-2"></i>
-            <a href="mailto:info@company.com">info@company.com</a>
+            <a href="mailto:info@company.com">-</a>
           </p>
         </div>
         <div class="col-lg-3 col-12 ms-auto d-lg-block d-none">
@@ -91,8 +91,8 @@
       <!-- Email & Telepon -->
       <div class="col-lg-4 col-12 mb-4">
         <h5>Email & Telepon</h5>
-        <p>Email: <a href="mailto:info@company.com">info@company.com</a></p>
-        <p>Telp: (0525) XXX-XXXX</p>
+        <p>Email: <a href="mailto:info@company.com">-</a></p>
+        <p>Telp: (0857) 54790820</p>
       </div>
 
       <!-- Jam Layanan -->
@@ -100,7 +100,7 @@
         <h5>Jam Layanan</h5>
         <ul>
           <li>Senin - Kamis : 08.00 - 16.00 WITA</li>
-          <li>Jumat : 08.00 - 11.30 WITA</li>
+          <li>Jumat : 08.00 - 16.30 WITA</li>
           <li>Sabtu & Minggu : Tutup</li>
         </ul>
       </div>
@@ -121,25 +121,72 @@
         </div>
       </div>
 
-      <!-- Formulir Kontak -->
-      <div class="col-12">
-        <h5>Kirim Pesan</h5>
-        <form action="https://formspree.io/f/mandvrvp" method="post">
-          <div class="mb-3">
-            <label for="name" class="form-label">Nama</label>
-            <input type="text" class="form-control" id="name" name="name" required>
-          </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-          </div>
-          <div class="mb-3">
-            <label for="message" class="form-label">Pesan</label>
-            <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Kirim</button>
-        </form>
-      </div>
+<!-- Formulir Kontak -->
+<div class="col-12">
+  <h5>Kirim Pesan</h5>
+  <form action="https://script.google.com/macros/s/AKfycbxkeHcTJY2jeDpos9ug0hVYkwEVMjaHezryu2xMw3p6HtQRVNYLzdgyFkq1vo5BAUYa/exec" 
+        method="post" accept-charset="UTF-8">
+
+    <!-- Nama -->
+    <div class="mb-3">
+      <label for="name" class="form-label">Nama</label>
+      <input type="text" class="form-control" id="name" name="name" required autocomplete="name">
+    </div>
+
+    <!-- Email -->
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" name="email" required autocomplete="email">
+    </div>
+
+    <!-- Pesan -->
+    <div class="mb-3">
+      <label for="message" class="form-label">Pesan</label>
+      <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+    </div>
+
+    <!-- Alert sukses/gagal -->
+    <div id="form-alert" class="alert d-none" role="alert"></div>
+
+    <!-- Tombol submit -->
+    <button type="submit" class="btn btn-primary">Kirim</button>
+  </form>
+</div>
+
+<script>
+  const form = document.querySelector("form");
+  const alertBox = document.getElementById("form-alert");
+
+form.addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  const formData = new FormData(form);
+  try {
+    const response = await fetch(form.action, {
+      method: form.method,
+      body: formData
+    });
+
+    const result = await response.json(); // baca balasan JSON
+
+    if (result.status === "success") {
+      alertBox.className = "alert alert-success mt-3";
+      alertBox.textContent = "✅ " + result.message;
+      alertBox.classList.remove("d-none");
+      form.reset();
+    } else {
+      throw new Error(result.message);
+    }
+  } catch (error) {
+    alertBox.className = "alert alert-danger mt-3";
+    alertBox.textContent = "❌ " + error.message;
+    alertBox.classList.remove("d-none");
+  }
+});
+
+</script>
+
+
 
     </div>
   </div>
@@ -182,7 +229,7 @@
                         <h5 class="site-footer-title mb-3">Jam Layanan</h5>
                         <ul class="footer-menu">
                         <li class="footer-menu-item text-white">Senin - Kamis : 08.00 - 16.00 WITA</li>
-                        <li class="footer-menu-item text-white">Jumat : 08.00 - 11.30 WITA</li>
+                        <li class="footer-menu-item text-white">Jumat : 08.00 - 16.30 WITA</li>
                         <li class="footer-menu-item text-white">Sabtu & Minggu : Tutup</li>
                         </ul>
                     </div>
@@ -191,10 +238,10 @@
                     <div class="col-lg-4 col-md-6 col-12 mx-auto">
                         <h5 class="site-footer-title mb-3">Link Resmi</h5>
                         <ul class="footer-menu">
-                        <li><a href="https://myasn.bkn.go.id" target="_blank" class="footer-menu-link">Portal MyASN</a></li>
-                        <li><a href="https://siasn.bkn.go.id" target="_blank" class="footer-menu-link">SIASN BKN</a></li>
-                        <li><a href="https://simpeg.kemenag.go.id" target="_blank" class="footer-menu-link">SIMPEG Kemenag</a></li>
-                        <li><a href="https://ekinerja.kemenag.go.id" target="_blank" class="footer-menu-link">E-Kinerja Kemenag</a></li>
+                        <li><a href="https://myasn.bkn.go.id" target="_blank" class="footer-menu-link">Portal MyASN BKN</a></li>
+                        <li><a href="https://www.kemenagbalangan.com" target="_blank" class="footer-menu-link">Kemenag Balangan</a></li>
+                        <li><a href="https://simpeg5.kemenag.go.id" target="_blank" class="footer-menu-link">SIMPEG 5</a></li>
+                        <li><a href="https://kinerja.bkn.go.id" target="_blank" class="footer-menu-link">E-Kinerja BKN</a></li>
                         </ul>
                     </div>
 
@@ -205,8 +252,8 @@
                     <div class="row">
 
                         <div class="col-lg-6 col-md-7 col-12">
-                            <p class="copyright-text mb-0">Copyright © 2036 <a href="#">Kind Heart</a> Charity Org.
-                        	Design: <a href="https://templatemo.com" target="_blank">TemplateMo</a></p>
+                            <p class="copyright-text mb-0"> <a href="#"> </a>  
+                        	 <a href="https://templatemo.com" target="_blank"> </a></p>
                         </div>
                         
                         <div class="col-lg-6 col-md-5 col-12 d-flex justify-content-center align-items-center mx-auto">
@@ -216,15 +263,11 @@
                                 </li>
 
                                 <li class="social-icon-item">
-                                    <a href="https://web.facebook.com/kankemenagbalangan" class="social-icon-link bi-facebook"></a>
+                                    <a href="https://web.facebook.com/kankemenagbalangan" class="social-icon-link bi-facebook" target="_blank"></a>
                                 </li>
 
                                 <li class="social-icon-item">
-                                    <a href="https://www.instagram.com/kankemenagbalangan" class="social-icon-link bi-instagram"></a>
-                                </li>
-
-                                <li class="social-icon-item">
-                                    <a href="#" class="social-icon-link bi-linkedin"></a>
+                                    <a href="https://instagram.com/kankemenagbalangan" class="social-icon-link bi-instagram" target="_blank"></a>
                                 </li>
 
                                 <li class="social-icon-item">
@@ -245,5 +288,16 @@
   <script src="js/jquery.sticky.js"></script>
   <script src="js/counter.js"></script>
   <script src="js/custom.js"></script>
+
+
+
+      <!-- Panggil voice.js -->
+      <script src="js/voice.js"></script>
+
+
+      <!-- Panggil voice.js -->
+      <script src="js/voice.js"></script>
+
+
 </body>
 </html>

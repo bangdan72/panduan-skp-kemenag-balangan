@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Chatbot Panduan SKP</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    #chatbox {
+      width: 300px;
+      height: 400px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      overflow-y: scroll;
+    }
+    .user { color: blue; margin: 5px 0; }
+    .bot { color: green; margin: 5px 0; }
+    #inputArea { margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+<h2>Chatbot Panduan SKP</h2>
+<div id="chatbox"></div>
+
+<div id="inputArea">
+  <input type="text" id="userInput" placeholder="Tulis pertanyaan..." size="25">
+  <button onclick="sendMessage()">Kirim</button>
+</div>
+
+<script>
+  const responses = {
+    "apa itu skp": "SKP adalah Sasaran Kinerja Pegawai yang wajib disusun ASN setiap tahun.",
+    "bagaimana cara isi skp": "Anda bisa mengisi SKP melalui aplikasi MyASN. Panduan lengkap ada di website ini pada menu Panduan SKP.",
+    "lupa password myasn": "Jika lupa password, silakan reset melalui halaman login MyASN atau hubungi admin kepegawaian.",
+    "kontak admin": "Anda bisa menghubungi admin kepegawaian Kemenag Balangan melalui email: admin@kemenagbalangan.go.id.",
+  };
+
+  function sendMessage() {
+    const input = document.getElementById("userInput").value.toLowerCase();
+    const chatbox = document.getElementById("chatbox");
+
+    chatbox.innerHTML += `<div class='user'>Anda: ${input}</div>`;
+
+    let reply = "Maaf, saya belum punya jawaban untuk pertanyaan itu. Silakan lihat menu panduan di website.";
+    for (let key in responses) {
+      if (input.includes(key)) {
+        reply = responses[key];
+        break;
+      }
+    }
+
+    chatbox.innerHTML += `<div class='bot'>Bot: ${reply}</div>`;
+    document.getElementById("userInput").value = "";
+    chatbox.scrollTop = chatbox.scrollHeight;
+  }
+</script>
+
+</body>
+</html>

@@ -40,7 +40,7 @@ https://templatemo.com/tm-581-kind-heart-charity
                             <i class="bi-envelope me-2"></i>
 
                             <a href="mailto:info@company.com">
-                                info@company.com
+                                -
                             </a>
                         </p>
                     </div>
@@ -115,7 +115,7 @@ https://templatemo.com/tm-581-kind-heart-charity
                         </li>
 
                         <li class="nav-item ms-1">
-                            <a class="nav-link custom-btn custom-border-btn btn" href="donate.html">Bantuan/FAQ</a>
+                            <a class="nav-link custom-btn custom-border-btn btn" href="faq.html">Bantuan/FAQ</a>
                         </li>
                     </ul>
                 </div>
@@ -265,67 +265,321 @@ https://templatemo.com/tm-581-kind-heart-charity
     </div>
 </section>
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Chatbot ASN</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+
+    /* Tombol Chat */
+    #chatButton {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+
+    /* Kotak Chat */
+    #chatContainer {
+      display: none;
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 320px;
+      height: 430px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      overflow: hidden;
+      flex-direction: column;
+    }
+
+    #chatHeader {
+      background: #2e7d32;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    #chatbox {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+
+    .user { color: blue; margin: 5px 0; }
+    .bot { color: green; margin: 5px 0; }
+
+    #inputArea {
+      display: flex;
+      border-top: 1px solid #ccc;
+    }
+
+    #userInput {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      outline: none;
+    }
+
+    #sendBtn {
+      background: #2e7d32;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Floating Chatbot -->
+<button id="chatButton">💬</button>
+
+<div id="chatContainer">
+  <div id="chatHeader">Chatbot ASN</div>
+  <div id="chatbox"></div>
+  <div id="inputArea">
+    <input type="text" id="userInput" placeholder="Tulis pertanyaan...">
+    <button id="sendBtn">Kirim</button>
+  </div>
+</div>
+
+<style>
+#chatButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+#chatContainer {
+  display: none;
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 320px;
+  height: 430px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  overflow: hidden;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+}
+#chatHeader {
+  background: #2e7d32;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+#chatbox {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+.user { color: blue; margin: 5px 0; }
+.bot { color: green; margin: 5px 0; }
+#inputArea { display: flex; border-top: 1px solid #ccc; }
+#userInput { flex: 1; padding: 8px; border: none; outline: none; }
+#sendBtn { background: #2e7d32; color: white; border: none; padding: 8px 12px; cursor: pointer; }
+</style>
+
+<script>
+const responses = [
+{keywords:["skp","sasaran kinerja","apa itu skp","target kerja","kinerja"], answer:"SKP (Sasaran Kinerja Pegawai) adalah rencana dan target kerja ASN selama 1 tahun. Wajib diisi melalui MyASN."},
+{keywords:["isi skp","cara isi skp","buat skp","mengisi skp","skp baru"], answer:"Isi SKP melalui MyASN → menu Kinerja. Panduan lengkap ada di website Panduan SKP."},
+{keywords:["lupa password","reset password","password hilang","lupa password myasn","ganti password"], answer:"Klik 'Lupa Password' di halaman login MyASN. Jika masih gagal, hubungi admin kepegawaian."},
+{keywords:["tidak bisa login","login error","masuk myasn gagal","gagal login","akses myasn"], answer:"Pastikan NIP dan password benar. Jika masih gagal, hubungi admin kepegawaian."},
+{keywords:["kontak admin","hubungi admin","email admin","info admin","subbag tu"], answer:"Hubungi Subbag TU Kepegawaian Kemenag Balangan. Email: kepegawaian@kemenagbalangan.go.id"},
+{keywords:["drh","daftar riwayat hidup","apa itu drh","form drh","mengisi drh"], answer:"DRH (Daftar Riwayat Hidup) diisi saat seleksi CPNS/PPPK. Format sudah tersedia di MyASN."},
+{keywords:["isi drh","cara isi drh","update drh","mengisi drh","drh baru"], answer:"Login ke MyASN → pilih menu DRH. Isi data pribadi, pendidikan, dan pengalaman kerja."},
+{keywords:["periode penilaian","penilaian skp","bulan","triwulan","semester tahunan"], answer:"Penilaian SKP dilakukan bulanan, triwulan, semester, dan tahunan. Panduan lengkap tersedia di website."},
+{keywords:["mutasi","mutasi pertengahan tahun","ganti unit","ubah skp","pindah unit"], answer:"Jika mutasi, batalkan SKP lama, buat SKP baru sesuai tupoksi unit baru, dan ajukan ke atasan baru."},
+{keywords:["faq","panduan","tutorial","bantuan","cara"], answer:"Panduan lengkap SKP, DRH, dan E-Kinerja bisa diakses di website Panduan ASN Kemenag Balangan."},
+{keywords:["video panduan","tutorial video","cara video","panduan audiovisual","panduan skp video"], answer:"Video panduan SKP tersedia di website. Klik menu Panduan Video untuk melihat seluruh tutorial."},
+{keywords:["panduan teks","panduan pdf","baca panduan","dokumen panduan","panduan skp"], answer:"Panduan teks SKP bisa dibaca di website melalui menu Panduan Teks."},
+{keywords:["aduan","lapor masalah","kirim pertanyaan","komplain","bantuan"], answer:"Gunakan form aduan di website untuk mengirim pertanyaan atau masalah terkait SKP/DRH."},
+{keywords:["e-kinerja","cara e-kinerja","akses e-kinerja","myasn e-kinerja","menu e-kinerja"], answer:"Login ke E-Kinerja, pilih menu SKP untuk membuat, mengedit, atau mengajukan SKP."},
+{keywords:["aplikasi myasn","myasn","login myasn","akun myasn","akses myasn"], answer:"MyASN adalah portal resmi untuk ASN mengelola SKP, DRH, dan data kepegawaian lainnya."},
+{keywords:["ubah skp","edit skp","revisi skp","perbaiki skp","koreksi skp"], answer:"Klik menu SKP → pilih SKP yang ingin direvisi → Edit, kemudian simpan kembali."},
+{keywords:["approve skp","ajukan skp","setujui skp","pengajuan skp","atasan skp"], answer:"Setelah SKP selesai dibuat dan dicek, klik 'Ajukan ke Atasan'. Atasan akan menerima notifikasi untuk meninjau dan menyetujui."},
+{keywords:["skp tidak muncul","skp hilang","skp error","skp blank","skp belum tampil"], answer:"Pastikan login dengan akun ASN yang benar. Jika masih tidak muncul, hubungi admin kepegawaian."},
+{keywords:["web hp","web tidak muncul","responsive","tidak tampil hp","mobile web"], answer:"Pastikan browser terbaru. Jika masih bermasalah, hapus cache atau gunakan browser lain."},
+{keywords:["panduan jabatan","tupoksi","skp jabatan","panduan a","panduan b"], answer:"Video atau teks panduan disesuaikan dengan jabatan A, B, C, sehingga ASN lebih mudah memahami SKP sesuai tupoksi."},
+{keywords:["tugas tambahan","skp tambahan","tambahan kerja","aktivitas tambahan","pengajuan tambahan"], answer:"Tugas tambahan dapat dicatat di SKP dengan persetujuan atasan. Panduan lengkap ada di website."},
+{keywords:["indikator kinerja","ukur kinerja","target kinerja","penilaian indikator","sasaran target"], answer:"Indikator kinerja harus sesuai Tupoksi. Pastikan semua kolom terisi untuk memudahkan penilaian."},
+{keywords:["catatan kinerja","tracking skp","laporan kinerja","monitoring skp","review skp"], answer:"Catatan kinerja bisa dicatat di E-Kinerja. Gunakan laporan bulanan atau triwulan untuk review."},
+{keywords:["penilaian atasan","approval atasan","cek skp","konfirmasi skp","validasi skp"], answer:"Atasan memeriksa SKP yang diajukan dan memberikan persetujuan atau meminta revisi sebelum finalisasi."},
+{keywords:["batas waktu skp","deadline skp","periode skp","tanggal skp","waktu pengisian"], answer:"Perhatikan deadline pengisian SKP. Panduan lengkap beserta tanggal tersedia di website."},
+{keywords:["logout myasn","keluar myasn","sign out","tutup akun","exit myasn"], answer:"Gunakan tombol logout di MyASN untuk mengakhiri sesi secara aman."},
+{keywords:["update data","ubah data pribadi","edit data","perubahan info","data myasn"], answer:"Login MyASN → menu Profil → ubah data sesuai kebutuhan. Pastikan menyimpan setiap perubahan."},
+{keywords:["password aman","password kuat","buat password","security password","lindungi akun"], answer:"Gunakan kombinasi huruf besar, huruf kecil, angka, dan simbol agar password aman."},
+{keywords:["reset skp","hapus skp","batal skp","menghapus skp","reset"], answer:"Jika ingin membatalkan SKP, gunakan opsi batal di menu SKP, kemudian buat SKP baru jika perlu."},
+{keywords:["bimbingan teknis","tutorial skp","training skp","pendampingan skp","helpdesk skp"], answer:"Bimbingan teknis SKP tersedia di website. Bisa diakses melalui menu Panduan atau hubungi admin."},
+{keywords:["laporan skp","rekap skp","summary skp","report skp","dokumen skp"], answer:"Laporan SKP dapat diunduh dari E-Kinerja. Pilih menu Laporan → download sesuai periode."},
+{keywords:["akses cepat","shortcut","quick access","link cepat","menu cepat"], answer:"Gunakan QR code atau shortlink di flyer untuk akses cepat panduan SKP."},
+{keywords:["pengaduan","keluhan","lapor masalah","aduan skp","email aduan"], answer:"Kirim aduan melalui form di website. Admin akan menindaklanjuti sesuai prosedur."},
+{keywords:["login gagal","error login","masuk gagal","akses ditolak","gagal masuk"], answer:"Cek NIP dan password, pastikan Caps Lock mati. Hubungi admin jika masalah tetap ada."},
+{keywords:["panduan update","update skp","ubah skp","edit skp","update informasi"], answer:"Panduan update SKP tersedia di website. Pastikan mengikuti langkah-langkah yang tercantum."},
+{keywords:["panduan lengkap","panduan resmi","manual skp","tutorial resmi","panduan"], answer:"Website menyediakan panduan lengkap SKP, DRH, dan E-Kinerja untuk ASN."},
+{keywords:["bantuan","help","faq","pertanyaan umum","support"], answer:"Gunakan chatbot ini atau lihat menu FAQ untuk pertanyaan umum terkait SKP."},
+{keywords:["masukan","feedback","saran","input","usulan"], answer:"Kirim masukan melalui form aduan atau hubungi admin kepegawaian untuk saran perbaikan."},
+{keywords:["instal aplikasi","app myasn","myasn app","unduh myasn","download myasn"], answer:"MyASN bisa diakses via browser atau aplikasi resmi. Unduh di Play Store/App Store jika perlu."},
+{keywords:["sinkronisasi","data terbaru","update data","refresh","refresh data"], answer:"Pastikan data di MyASN dan E-Kinerja sinkron. Refresh halaman jika terjadi delay."},
+{keywords:["tutorial skp","cara isi","panduan langkah","panduan skp","petunjuk"], answer:"Ikuti tutorial langkah demi langkah di menu Panduan SKP website."},
+{keywords:["akses e-learning","pelatihan online","training online","learning skp","bimbingan online"], answer:"Pelatihan online tersedia melalui portal resmi Kemenag. Login dengan akun ASN."},
+{keywords:["ubah unit","mutasi skp","ganti unit","pindah unit","update unit"], answer:"Jika pindah unit, buat SKP baru sesuai tupoksi unit baru dan ajukan ke atasan baru."},
+{keywords:["nilai skp","penilaian kinerja","skp nilai","score skp","rating skp"], answer:"Nilai SKP dihitung dari capaian target, kualitas kerja, dan indikator kinerja yang sudah ditentukan."},
+{keywords:["laporan triwulan","report triwulan","triwulan skp","rekap triwulan","skp triwulan"], answer:"Laporan triwulan dapat diunduh di E-Kinerja → menu Laporan → Triwulan sesuai periode."},
+{keywords:["laporan bulanan","report bulanan","skp bulanan","rekap bulanan","bulan skp"], answer:"Laporan bulanan dicatat di E-Kinerja. Pastikan semua target diupdate tiap bulan."},
+{keywords:["laporan semester","skp semester","rekap semester","report semester","evaluasi semester"], answer:"Evaluasi semester dilakukan setiap 6 bulan. Gunakan menu Laporan Semester untuk melihat hasil."},
+{keywords:["laporan tahunan","skp tahunan","evaluasi tahunan","report tahunan","rekap tahunan"], answer:"Penilaian tahunan digunakan sebagai dasar kenaikan kinerja. Bisa dilihat di menu Laporan Tahunan."},
+{keywords:["atasan","supervisor","pimpinan","approval","validasi"], answer:"Semua SKP harus diverifikasi oleh atasan sebelum finalisasi."},
+{keywords:["review skp","cek skp","periksa skp","validasi skp","konfirmasi skp"], answer:"Atasan dapat mereview SKP melalui E-Kinerja, memastikan data lengkap dan akurat."},
+{keywords:["role admin","akses admin","admin kepegawaian","tu kepegawaian","admin myasn"], answer:"Admin kepegawaian bisa membantu masalah login, reset password, atau perbaikan SKP."},
+{keywords:["panduan CPNS","panduan pppk","rekrutmen","daftar cpns","panduan seleksi"], answer:"Panduan CPNS/PPPK tersedia di website resmi Kemenag, lengkap dengan DRH dan SKP."},
+{keywords:["update aplikasi","upgrade myasn","perbarui myasn","update e-kinerja","versi terbaru"], answer:"Pastikan menggunakan versi terbaru MyASN atau E-Kinerja untuk menghindari error."},
+{keywords:["masalah teknis","error","gangguan","bug","keluhan"], answer:"Laporkan masalah teknis melalui form aduan atau hubungi admin kepegawaian."},
+{keywords:["dokumen pendukung","file skp","upload file","lampiran skp","unggah file"], answer:"Dokumen pendukung dapat diunggah melalui menu SKP sesuai petunjuk."},
+{keywords:["cek data","validasi data","verifikasi data","skp validasi","data benar"], answer:"Pastikan semua data SKP sesuai dengan informasi terbaru. Gunakan fitur validasi di E-Kinerja."},
+{keywords:["riwayat pendidikan","pendidikan","drh pendidikan","update pendidikan","tambah pendidikan"], answer:"Update riwayat pendidikan melalui DRH di MyASN → menu Pendidikan."},
+{keywords:["riwayat kerja","pengalaman kerja","drh kerja","update kerja","tambah pengalaman"], answer:"Update pengalaman kerja melalui DRH di MyASN → menu Pengalaman Kerja."},
+{keywords:["sertifikat","dokumen pendukung","lampiran","file pendukung","unggah sertifikat"], answer:"Unggah dokumen sertifikat pendukung di DRH atau SKP sesuai panduan."},
+{keywords:["validasi atasan","approval","konfirmasi","review atasan","setuju skp"], answer:"Pastikan semua SKP telah disetujui atasan sebelum periode penilaian selesai."},
+{keywords:["catatan tambahan","komentar","feedback","review tambahan","catatan atasan"], answer:"Gunakan kolom catatan tambahan untuk memberikan feedback atau komentar dari atasan."},
+{keywords:["akses mobile","myasn hp","aplikasi hp","akses smartphone","mobile skp"], answer:"Website dan aplikasi MyASN mendukung tampilan mobile, pastikan browser atau app terbaru."},
+{keywords:["panduan cepat","quick guide","shortcut","panduan singkat","link cepat"], answer:"Gunakan panduan cepat yang tersedia di flyer atau website untuk akses langsung ke menu SKP/DRH."},
+{keywords:["penilaian kinerja","indikator","target kinerja","nilai skp","evaluasi"], answer:"Semua indikator kinerja harus diisi sesuai tupoksi agar penilaian akurat."},
+{keywords:["revisi skp","edit skp","ubah skp","perbaiki skp","update skp"], answer:"Jika SKP perlu revisi, gunakan menu edit di E-Kinerja, simpan perubahan, lalu ajukan kembali."},
+{keywords:["panduan myasn","cara myasn","tutorial myasn","bantuan myasn","help myasn"], answer:"Panduan MyASN lengkap bisa diakses di website resmi Kemenag pada menu Panduan."},
+{keywords:["tips myasn","trik myasn","panduan cepat","shortcut myasn","myasn tips"], answer:"Gunakan tips cepat dan shortcut di Panduan MyASN agar pengisian SKP lebih efisien."},
+{keywords:["upload drh","unggah drh","file drh","dokumen drh","lampiran drh"], answer:"Upload semua dokumen DRH sesuai format MyASN agar validasi berhasil."},
+{keywords:["hapus drh","batal drh","reset drh","edit drh","revisi drh"], answer:"Gunakan menu edit atau batal di DRH untuk melakukan revisi data."},
+{keywords:["akun ganda","duplicate akun","login ganda","myasn duplikat","dua akun"], answer:"Jika memiliki akun ganda, hubungi admin kepegawaian untuk penggabungan atau penonaktifan akun lama."},
+{keywords:["notifikasi","pemberitahuan","alert","update skp","reminder"], answer:"Aktifkan notifikasi di MyASN dan E-Kinerja agar mendapatkan update penting SKP dan DRH."},
+{keywords:["panduan video","video tutorial","cara video","tutorial audiovisual","panduan audiovisual"], answer:"Video panduan tersedia di menu Panduan Video untuk langkah-langkah pengisian SKP/DRH."},
+{keywords:["bimbingan teknis","pendampingan","training","helpdesk","support"], answer:"Bimbingan teknis SKP bisa diakses melalui website, hubungi admin jika perlu bantuan langsung."},
+{keywords:["pengajuan tambahan","tugas tambahan","aktivitas tambahan","tambahan skp","extra task"], answer:"Tugas tambahan dapat dicatat di SKP dengan persetujuan atasan. Panduan lengkap ada di website."},
+{keywords:["tanggal pengisian","deadline skp","batas waktu","periode skp","waktu skp"], answer:"Perhatikan tanggal pengisian SKP agar sesuai periode evaluasi."},
+{keywords:["panduan triwulan","triwulan skp","laporan triwulan","evaluasi triwulan","report triwulan"], answer:"Panduan laporan triwulan tersedia di website dan E-Kinerja."},
+{keywords:["panduan semester","semester skp","laporan semester","evaluasi semester","report semester"], answer:"Evaluasi semester dilakukan setiap 6 bulan, ikuti panduan di website."},
+{keywords:["panduan tahunan","tahun skp","laporan tahunan","evaluasi tahunan","report tahunan"], answer:"Penilaian tahunan digunakan untuk kenaikan kinerja. Panduan ada di website."},
+{keywords:["helpdesk","support","bantuan admin","kontak helpdesk","layanan"], answer:"Hubungi helpdesk/admin kepegawaian untuk pertanyaan atau kendala teknis."},
+{keywords:["file regulasi","formulir","download regulasi","dokumen regulasi","formulir skp"], answer:"Semua formulir dan regulasi tersedia di menu Download Formulir & Regulasi di website."},
+{keywords:["login error","error myasn","masuk gagal","login problem","gagal login"], answer:"Cek NIP, password, dan Caps Lock. Hubungi admin jika tetap gagal."},
+{keywords:["update skill","pelatihan","training online","bimbingan","kursus"], answer:"Pelatihan online dan bimbingan tersedia di portal resmi Kemenag untuk ASN."},
+{keywords:["feedback","komentar","saran","masukan","input"], answer:"Sampaikan feedback melalui form aduan atau hubungi admin kepegawaian."},
+{keywords:["panduan lengkap","tutorial lengkap","manual lengkap","guide lengkap","full guide"], answer:"Panduan lengkap SKP, DRH, dan E-Kinerja tersedia di website resmi Kemenag."},
+{keywords:["akses cepat","shortcut","link cepat","quick access","quick link"], answer:"Gunakan QR code atau shortcut di flyer untuk akses cepat panduan SKP/DRH."},
+{keywords:["validasi data","cek data","periksa data","review data","data benar"], answer:"Pastikan semua data SKP/DRH sesuai dan valid, gunakan menu validasi di E-Kinerja/MyASN."},
+{keywords:["akun myasn","profil myasn","data akun","info akun","akun pribadi"], answer:"Periksa dan update data akun melalui menu Profil di MyASN."}
+];
+
+const chatButton = document.getElementById("chatButton");
+const chatContainer = document.getElementById("chatContainer");
+const chatbox = document.getElementById("chatbox");
+const userInput = document.getElementById("userInput");
+const sendBtn = document.getElementById("sendBtn");
+
+chatButton.addEventListener("click", () => {
+  chatContainer.style.display = (chatContainer.style.display === "none" || chatContainer.style.display === "") ? "flex" : "none";
+});
+
+sendBtn.addEventListener("click", sendMessage);
+userInput.addEventListener("keypress", function(e){
+  if(e.key === "Enter") sendMessage();
+});
+
+function sendMessage(){
+  const input = userInput.value.toLowerCase().trim();
+  if(!input) return;
+  chatbox.innerHTML += `<div class='user'>Anda: ${input}</div>`;
+
+  let reply = "Maaf, jawaban belum tersedia. Silakan lihat FAQ di halaman atau hubungi admin.";
+  for(let i=0;i<responses.length;i++){
+    for(let j=0;j<responses[i].keywords.length;j++){
+      if(input.includes(responses[i].keywords[j])){
+        reply = responses[i].answer;
+        break;
+      }
+    }
+  }
+
+  chatbox.innerHTML += `<div class='bot'>Sistem: ${reply}</div>`;
+  userInput.value = "";
+  chatbox.scrollTop = chatbox.scrollHeight;
+}
+</script>
+
+
+
         </main>
 
         <footer class="site-footer">
-            <div class="container">
-                <div class="row">
+                <div class="container">
+                    <div class="row">
+
+                    <!-- Kolom 1: Profil Instansi -->
                     <div class="col-lg-3 col-12 mb-4">
-                        <img src="images/logo.png" class="logo img-fluid" alt="">
+                        <h5 class="site-footer-title">Kemenag Balangan</h5>
+                        <p class="text-white mb-2">Panduan Layanan Kepegawaian</p>
+                        <p class="text-white mb-0"><em>Motto: Transparan, Akurat, Amanah, Wibawa, Unggul, Nyaman</em></p>
                     </div>
 
+                    <!-- Kolom 2: Jam Layanan -->
                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                        <h5 class="site-footer-title mb-3">Quick Links</h5>
-
+                        <h5 class="site-footer-title mb-3">Jam Layanan</h5>
                         <ul class="footer-menu">
-                            <li class="footer-menu-item"><a href="#" class="footer-menu-link">Our Story</a></li>
-
-                            <li class="footer-menu-item"><a href="#" class="footer-menu-link">Newsroom</a></li>
-
-                            <li class="footer-menu-item"><a href="#" class="footer-menu-link">Causes</a></li>
-
-                            <li class="footer-menu-item"><a href="#" class="footer-menu-link">Become a volunteer</a></li>
-
-                            <li class="footer-menu-item"><a href="#" class="footer-menu-link">Partner with us</a></li>
+                        <li class="footer-menu-item text-white">Senin - Kamis : 08.00 - 16.00 WITA</li>
+                        <li class="footer-menu-item text-white">Jumat : 08.00 - 16.30 WITA</li>
+                        <li class="footer-menu-item text-white">Sabtu & Minggu : Tutup</li>
                         </ul>
                     </div>
 
+                    <!-- Kolom 3: Link Eksternal -->
                     <div class="col-lg-4 col-md-6 col-12 mx-auto">
-                        <h5 class="site-footer-title mb-3">Contact Infomation</h5>
+                        <h5 class="site-footer-title mb-3">Link Resmi</h5>
+                        <ul class="footer-menu">
+                        <li><a href="https://myasn.bkn.go.id" target="_blank" class="footer-menu-link">Portal MyASN BKN</a></li>
+                        <li><a href="https://www.kemenagbalangan.com" target="_blank" class="footer-menu-link">Kemenag Balangan</a></li>
+                        <li><a href="https://simpeg5.kemenag.go.id" target="_blank" class="footer-menu-link">SIMPEG 5</a></li>
+                        <li><a href="https://kinerja.bkn.go.id" target="_blank" class="footer-menu-link">E-Kinerja BKN</a></li>
+                        </ul>
+                    </div>
 
-                        <p class="text-white d-flex mb-2">
-                            <i class="bi-telephone me-2"></i>
-
-                            <a href="tel: 120-240-9600" class="site-footer-link">
-                                120-240-9600
-                            </a>
-                        </p>
-
-                        <p class="text-white d-flex">
-                            <i class="bi-envelope me-2"></i>
-
-                            <a href="mailto:donate@charity.org" class="site-footer-link">
-                                donate@charity.org
-                            </a>
-                        </p>
-
-                        <p class="text-white d-flex mt-3">
-                            <i class="bi-geo-alt me-2"></i>
-                            Akershusstranda 20, 0150 Oslo, Norway
-                        </p>
-
-                        <a href="#" class="custom-btn btn mt-3">Get Direction</a>
                     </div>
                 </div>
-            </div>
-
             <div class="site-footer-bottom">
                 <div class="container">
                     <div class="row">
 
                         <div class="col-lg-6 col-md-7 col-12">
-                            <p class="copyright-text mb-0">Copyright © 2036 <a href="#">Kind Heart</a> Charity Org.
-                        	Design: <a href="https://templatemo.com" target="_blank">TemplateMo</a></p>
+                            <p class="copyright-text mb-0"> <a href="#"> </a>  
+                        	 <a href="https://templatemo.com" target="_blank"> </a></p>
                         </div>
                         
                         <div class="col-lg-6 col-md-5 col-12 d-flex justify-content-center align-items-center mx-auto">
@@ -335,19 +589,15 @@ https://templatemo.com/tm-581-kind-heart-charity
                                 </li>
 
                                 <li class="social-icon-item">
-                                    <a href="#" class="social-icon-link bi-facebook"></a>
+                                    <a href="https://web.facebook.com/kankemenagbalangan" class="social-icon-link bi-facebook" target="_blank"></a>
                                 </li>
 
                                 <li class="social-icon-item">
-                                    <a href="#" class="social-icon-link bi-instagram"></a>
+                                    <a href="https://instagram.com/kankemenagbalangan" class="social-icon-link bi-instagram" target="_blank"></a>
                                 </li>
 
                                 <li class="social-icon-item">
-                                    <a href="#" class="social-icon-link bi-linkedin"></a>
-                                </li>
-
-                                <li class="social-icon-item">
-                                    <a href="https://youtube.com/templatemo" class="social-icon-link bi-youtube"></a>
+                                    <a href="https://www.youtube.com/@kankemenagbalangan/videos" class="social-icon-link bi-youtube" target="_blank"></a>
                                 </li>
                             </ul>
                         </div>
@@ -363,6 +613,11 @@ https://templatemo.com/tm-581-kind-heart-charity
         <script src="js/jquery.sticky.js"></script>
         <script src="js/counter.js"></script>
         <script src="js/custom.js"></script>
+
+
+      <!-- Panggil voice.js -->
+      <script src="js/voice.js"></script>
+
 
     </body>
 </html>
