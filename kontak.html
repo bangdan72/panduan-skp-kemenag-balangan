@@ -72,61 +72,59 @@
   </nav>
 
   <main>
-<!-- Section Kontak -->
-<section class="section-padding bg-light" id="section_6">
+<section class="contact-section section-padding" id="section_6">
   <div class="container">
     <div class="row">
 
-      <div class="col-12 text-center mb-5">
+      <!-- Judul Section -->
+      <div class="col-12 mb-5 text-center">
         <h2>Kontak Kami</h2>
-        <p>Hubungi kami untuk informasi lebih lanjut terkait layanan dan panduan SKP.</p>
+        <p>Silakan menghubungi kami melalui form berikut atau kunjungi kantor kami.</p>
       </div>
 
-      <!-- Alamat -->
-      <div class="col-lg-4 col-12 mb-4">
-        <h5>Alamat</h5>
-        <p>Jalan A. Yani Km. 7 Paringin<br>Kab. Balangan, Kalimantan Selatan</p>
+      <!-- Kolom Formulir -->
+      <div class="col-lg-6 col-12 mb-4">
+        <div class="card shadow-sm p-4 h-100">
+          <h5>Kirim Pesan</h5>
+          <form id="contact-form" action="https://formspree.io/f/mandvrvp" method="POST">
+            <div class="mb-3">
+              <label for="name" class="form-label">Nama</label>
+              <input type="text" class="form-control" id="name" name="name" required autocomplete="name">
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" name="email" required autocomplete="email">
+            </div>
+            <div class="mb-3">
+              <label for="message" class="form-label">Pesan</label>
+              <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+            </div>
+            <div id="form-alert" class="alert d-none" role="alert"></div>
+            <button type="submit" class="btn btn-primary">Kirim</button>
+          </form>
+        </div>
       </div>
 
-      <!-- Email & Telepon -->
-      <div class="col-lg-4 col-12 mb-4">
-        <h5>Email & Telepon</h5>
-        <p>Email: <a href="mailto:info@company.com">-</a></p>
-        <p>Telp: (0857) 54790820</p>
+      <!-- Kolom Alamat + Map -->
+      <div class="col-lg-6 col-12 mb-4">
+        <div class="card shadow-sm p-4 h-100">
+          <h5 class="d-flex align-items-center">
+            <span class="me-2">Alamat Kantor</span>
+            <img src="images/icon/icon-mapsg.gif" alt="Map Icon" 
+                 style="width:40px; height:40px;">
+          </h5>
+          <p>Jalan A. Yani Km. 7 Paringin Kab. Balangan, Kalimantan Selatan</p>
+
+          <div class="map-responsive">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3986.376646083265!2d115.4626486!3d-2.3800011999999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2de545488df30559%3A0x17f22ae2d66bb635!2sKantor%20Kementerian%20Agama%20Kab.%20Balangan!5e0!3m2!1sid!2sid!4v1758868409425!5m2!1sid!2sid" 
+                    style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
       </div>
 
-      <!-- Jam Layanan -->
-      <div class="col-lg-4 col-12 mb-4">
-        <h5>Jam Layanan</h5>
-        <ul>
-          <li>Senin - Kamis : 08.00 - 16.00 WITA</li>
-          <li>Jumat : 08.00 - 16.30 WITA</li>
-          <li>Sabtu & Minggu : Tutup</li>
-        </ul>
-      </div>
-
-      <!-- Google Maps Responsive -->
-<div class="col-12 mb-4" style="background-color:#ffffff; padding:20px; border-radius:8px;">
-  <h5>
-    <img src="images/icon/icon-mapsg.gif" alt="Map Icon" 
-         style="width:40px; height:40px; margin-right:10px; vertical-align:middle;">
-    Alamat Kantor
-  </h5>
-  <p>Jalan A. Yani Km. 7 Paringin Kab. Balangan, Kalimantan Selatan</p>
-
-  <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden;">
-    <iframe 
-      src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7972.753293323228!2d115.46264900000001!3d-2.380001!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2de545488df30559%3A0x17f22ae2d66bb635!2sKantor%20Kementerian%20Agama%20Kab.%20Balangan!5e0!3m2!1sid!2sid!4v1758871228999!5m2!1sid!2sid" 
-      style="border:0; position:absolute; top:0; left:0; width:100%; height:100%;" 
-      allowfullscreen="" 
-      loading="lazy" 
-      referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
+    </div>
   </div>
-</div>
-
-
-      </div>
+</section>
 
 
 
